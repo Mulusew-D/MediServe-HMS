@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaLocationArrow, FaPhone } from "react-icons/fa6";
+import { FaLocationArrow, FaPhone, FaClock } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 
 const Footer = () => {
@@ -26,7 +26,11 @@ const Footer = () => {
         {/* Hours */}
         <div className="footer-hours">
           <h4>Opening Hours</h4>
-          <p>24 Hours</p>
+          <div className="flex items-center gap-2">
+            <FaClock className="text-green-500" />
+            <p className="font-medium text-lg">24 Hours a Day</p>
+          </div>
+          <p className="text-gray-600">7 Days a Week</p>
         </div>
 
         {/* Contact */}
