@@ -1,16 +1,18 @@
-
 import express from "express";
 import { dbConnection } from "./database/dbConnection.js";
 import cookieParser from "cookie-parser";
-import {config} from "dotenv"
+import { config } from "dotenv";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import { errorMiddleware } from "./middlewares/error.js";
 import messageRouter from "./router/messageRouter.js";
 import userRouter from "./router/userRouter.js";
 import appointmentRouter from "./router/appointmentRouter.js";
+
 const app = express();
-config({path: "./config/config.env" });
+config({ path: "./config/config.env" });
+
+// CORS configuration
 app.use(
   cors({
     origin: [
@@ -22,22 +24,36 @@ app.use(
   })
 );
 
-
+// Middleware
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(
   fileUpload({
     useTempFiles: true,
     tempFileDir: "/tmp/",
   })
 );
+
+// Routes
 app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/appointment", appointmentRouter);
 
+// ✅ Root route for Render / browser access
+app.get("/", (req, res) => {
+  res.send("✅ MediServe API is running successfully on Render!");
+});
+
+// ✅ Optional health check route for frontend
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", message: "Backend is online!" });
+});
+
+// Connect to DB
 dbConnection();
 
+// Error middleware
 app.use(errorMiddleware);
+
 export default app;
